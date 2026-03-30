@@ -20,18 +20,31 @@
                 <h3 class="text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-4">Recent Conversations</h3>
                 <div class="space-y-2 overflow-y-auto max-h-[calc(100%-2rem)]">
                     @forelse($conversations as $convo)
-                        <button
-                            wire:click="$set('conversationId', {{ $convo->id }})"
-                            wire:click.debounce="loadConversation"
-                            class="w-full text-left p-3 rounded-xl transition-colors {{ $conversationId === $convo->id ? 'bg-agri-lime/20 border border-agri-lime' : 'bg-agri-bg dark:bg-zinc-900 hover:bg-agri-bg-alt dark:hover:bg-zinc-800' }}"
-                        >
-                            <p class="text-sm font-medium text-zinc-800 dark:text-white truncate">
-                                {{ $convo->title }}
-                            </p>
-                            <p class="text-xs text-zinc-500 dark:text-zinc-400">
-                                {{ $convo->last_message_at?->diffForHumans() ?? 'No messages' }}
-                            </p>
-                        </button>
+                        <div class="flex items-start gap-2 p-2 rounded-xl {{ $conversationId === $convo->id ? 'bg-agri-lime/20 border border-agri-lime' : 'bg-agri-bg dark:bg-zinc-900' }}">
+                            <button
+                                wire:click="$set('conversationId', {{ $convo->id }})"
+                                wire:click.debounce="loadConversation"
+                                class="flex-1 text-left p-1 rounded-lg transition-colors hover:bg-agri-bg-alt dark:hover:bg-zinc-800"
+                            >
+                                <p class="text-sm font-medium text-zinc-800 dark:text-white truncate">
+                                    {{ $convo->title }}
+                                </p>
+                                <p class="text-xs text-zinc-500 dark:text-zinc-400">
+                                    {{ $convo->last_message_at?->diffForHumans() ?? 'No messages' }}
+                                </p>
+                            </button>
+                            <button
+                                type="button"
+                                wire:click="deleteConversation({{ $convo->id }})"
+                                wire:confirm="Delete this chat permanently?"
+                                class="mt-1 p-1.5 rounded-md text-zinc-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-zinc-800"
+                                title="Delete chat"
+                            >
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                </svg>
+                            </button>
+                        </div>
                     @empty
                         <p class="text-sm text-zinc-500 dark:text-zinc-400 text-center py-4">No conversations yet</p>
                     @endforelse

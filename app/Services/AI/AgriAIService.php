@@ -13,18 +13,25 @@ class AgriAIService
 
     protected GroqService $groq;
 
-    public function __construct(GeminiService $gemini, GroqService $groq)
+    protected OpenAIService $openai;
+
+    public function __construct(GeminiService $gemini, GroqService $groq, OpenAIService $openai)
     {
         $this->gemini = $gemini;
         $this->groq = $groq;
+        $this->openai = $openai;
     }
 
     /**
      * Get the chat service (Groq for free, fallback to Gemini)
      */
-    protected function getChatService(): GeminiService|GroqService
+    protected function getChatService(): GeminiService|GroqService|OpenAIService
     {
         $provider = config('llm.chat_provider', 'groq');
+
+        if ($provider === 'openai' && $this->openai->isConfigured()) {
+            return $this->openai;
+        }
 
         if ($provider === 'groq' && $this->groq->isConfigured()) {
             return $this->groq;
@@ -239,6 +246,19 @@ class AgriAIService
 
         $chatService = $this->getChatService();
         $result = $chatService->chat($messages, $systemPrompt);
+
+        // Fallback to Groq if OpenAI is configured but quota/rate limits are hit.
+        if (! $result['success'] && $chatService instanceof OpenAIService && $this->groq->isConfigured()) {
+            $error = strtolower($result['error'] ?? '');
+            $shouldFallback = str_contains($error, 'quota')
+                || str_contains($error, 'rate limit')
+                || str_contains($error, 'insufficient_quota')
+                || str_contains($error, '429');
+
+            if ($shouldFallback) {
+                $result = $this->groq->chat($messages, $systemPrompt);
+            }
+        }
 
         // Log the query and update conversation
         if ($user && $result['success']) {

@@ -83,13 +83,16 @@ class Assistant extends Component
             'created_at' => 'Just now',
         ];
 
+        $chatProvider = config('llm.chat_provider', 'groq');
+        $chatModel = (string) config("llm.providers.{$chatProvider}.model", config('llm.providers.groq.model'));
+
         // Create the query record
         $query = AIQuery::create([
             'user_id' => $user->id,
             'ai_conversation_id' => $conversation->id,
             'type' => 'chat',
-            'provider' => 'gemini',
-            'model' => config('llm.providers.gemini.model'),
+            'provider' => $chatProvider,
+            'model' => $chatModel,
             'prompt' => $trimmedMessage,
             'role' => 'user',
             'status' => 'pending',
@@ -232,6 +235,24 @@ class Assistant extends Component
         $this->messages = [];
         $this->message = '';
         $this->isProcessing = false;
+    }
+
+    public function deleteConversation(int $conversationId): void
+    {
+        $conversation = AIConversation::where('user_id', Auth::id())->find($conversationId);
+        if (! $conversation) {
+            return;
+        }
+
+        AIQuery::where('user_id', Auth::id())
+            ->where('ai_conversation_id', $conversation->id)
+            ->delete();
+
+        $conversation->delete();
+
+        if ($this->conversationId === $conversation->id) {
+            $this->newConversation();
+        }
     }
 
     public function render()
