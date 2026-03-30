@@ -1,0 +1,92 @@
+@import 'tailwindcss';
+@import '../../vendor/livewire/flux/dist/flux.css';
+
+@source '../views';
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../vendor/livewire/flux-pro/stubs/**/*.blade.php';
+@source '../../vendor/livewire/flux/stubs/**/*.blade.php';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+    /* Typography */
+    --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+
+    /* AgriAI Brand Colors */
+    --color-agri-lime: #c5d82d;
+    --color-agri-lime-light: #d5e83d;
+    --color-agri-lime-dark: #b5c82d;
+    --color-agri-olive: #8b9a2d;
+    --color-agri-olive-dark: #6b7a24;
+    --color-agri-green: #4a6d2a;
+    --color-agri-green-dark: #2d4a1a;
+
+    /* Background Colors */
+    --color-agri-bg: #f8f8f6;
+    --color-agri-bg-alt: #f0f4d4;
+    --color-agri-bg-card: #ffffff;
+
+    /* Zinc Scale (Neutral) */
+    --color-zinc-50: #fafafa;
+    --color-zinc-100: #f5f5f5;
+    --color-zinc-200: #e5e5e5;
+    --color-zinc-300: #d4d4d4;
+    --color-zinc-400: #a3a3a3;
+    --color-zinc-500: #737373;
+    --color-zinc-600: #525252;
+    --color-zinc-700: #404040;
+    --color-zinc-800: #262626;
+    --color-zinc-900: #171717;
+    --color-zinc-950: #0a0a0a;
+
+    /* Accent Colors (using AgriAI lime) */
+    --color-accent: var(--color-agri-lime);
+    --color-accent-content: var(--color-agri-lime);
+    --color-accent-foreground: var(--color-zinc-800);
+
+    /* Primary (alias for accent) */
+    --color-primary: var(--color-agri-lime);
+    --color-primary-foreground: var(--color-zinc-800);
+}
+
+@layer theme {
+    .dark {
+        --color-accent: var(--color-agri-lime);
+        --color-accent-content: var(--color-agri-lime);
+        --color-accent-foreground: var(--color-zinc-900);
+        --color-primary: var(--color-agri-lime);
+        --color-primary-foreground: var(--color-zinc-900);
+        --color-agri-bg: var(--color-zinc-900);
+        --color-agri-bg-alt: #1a2610;
+        --color-agri-bg-card: var(--color-zinc-800);
+    }
+}
+
+@layer base {
+
+    *,
+    ::after,
+    ::before,
+    ::backdrop,
+    ::file-selector-button {
+        border-color: var(--color-gray-200, currentColor);
+    }
+}
+
+[data-flux-field]:not(ui-radio, ui-checkbox) {
+    @apply grid gap-2;
+}
+
+[data-flux-label] {
+    @apply  !mb-0 !leading-tight;
+}
+
+input:focus[data-flux-control],
+textarea:focus[data-flux-control],
+select:focus[data-flux-control] {
+    @apply outline-hidden ring-2 ring-accent ring-offset-2 ring-offset-accent-foreground;
+}
+
+/* \[:where(&)\]:size-4 {
+    @apply size-4;
+} */

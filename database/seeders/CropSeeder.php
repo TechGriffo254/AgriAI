@@ -1,0 +1,175 @@
+<?php
+
+namespace Database\Seeders;
+
+use App\Models\Crop;
+use Illuminate\Database\Seeder;
+
+class CropSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     */
+    public function run(): void
+    {
+        $crops = [
+            [
+                'name' => 'Maize',
+                'scientific_name' => 'Zea mays',
+                'category' => 'Cereals',
+                'days_to_maturity' => 120,
+                'planting_season' => 'Long Rains (March-May)',
+                'harvest_season' => 'Dry Season (July-September)',
+                'optimal_temp_min' => 18,
+                'optimal_temp_max' => 32,
+                'water_requirement' => 500,
+                'soil_type_preference' => 'Loam',
+                'ph_min' => 5.8,
+                'ph_max' => 7.0,
+                'is_active' => true,
+            ],
+            [
+                'name' => 'Beans',
+                'scientific_name' => 'Phaseolus vulgaris',
+                'category' => 'Legumes',
+                'days_to_maturity' => 90,
+                'planting_season' => 'Long Rains/Short Rains',
+                'harvest_season' => 'All Year',
+                'optimal_temp_min' => 16,
+                'optimal_temp_max' => 28,
+                'water_requirement' => 400,
+                'soil_type_preference' => 'Sandy Loam',
+                'ph_min' => 6.0,
+                'ph_max' => 7.5,
+                'is_active' => true,
+            ],
+            [
+                'name' => 'Tomatoes',
+                'scientific_name' => 'Solanum lycopersicum',
+                'category' => 'Vegetables',
+                'days_to_maturity' => 75,
+                'planting_season' => 'All Year',
+                'harvest_season' => 'All Year',
+                'optimal_temp_min' => 20,
+                'optimal_temp_max' => 30,
+                'water_requirement' => 600,
+                'soil_type_preference' => 'Loam',
+                'ph_min' => 6.0,
+                'ph_max' => 6.8,
+                'is_active' => true,
+            ],
+            [
+                'name' => 'Potatoes',
+                'scientific_name' => 'Solanum tuberosum',
+                'category' => 'Tubers',
+                'days_to_maturity' => 100,
+                'planting_season' => 'Long Rains',
+                'harvest_season' => 'Dry Season',
+                'optimal_temp_min' => 15,
+                'optimal_temp_max' => 25,
+                'water_requirement' => 500,
+                'soil_type_preference' => 'Sandy Loam',
+                'ph_min' => 5.5,
+                'ph_max' => 6.5,
+                'is_active' => true,
+            ],
+            [
+                'name' => 'Kale (Sukuma Wiki)',
+                'scientific_name' => 'Brassica oleracea',
+                'category' => 'Vegetables',
+                'days_to_maturity' => 60,
+                'planting_season' => 'All Year',
+                'harvest_season' => 'All Year',
+                'optimal_temp_min' => 15,
+                'optimal_temp_max' => 25,
+                'water_requirement' => 400,
+                'soil_type_preference' => 'Loam',
+                'ph_min' => 6.0,
+                'ph_max' => 7.5,
+                'is_active' => true,
+            ],
+            [
+                'name' => 'Cabbage',
+                'scientific_name' => 'Brassica oleracea var. capitata',
+                'category' => 'Vegetables',
+                'days_to_maturity' => 80,
+                'planting_season' => 'All Year',
+                'harvest_season' => 'All Year',
+                'optimal_temp_min' => 15,
+                'optimal_temp_max' => 20,
+                'water_requirement' => 450,
+                'soil_type_preference' => 'Loam',
+                'ph_min' => 6.0,
+                'ph_max' => 7.0,
+                'is_active' => true,
+            ],
+            [
+                'name' => 'Onions',
+                'scientific_name' => 'Allium cepa',
+                'category' => 'Vegetables',
+                'days_to_maturity' => 120,
+                'planting_season' => 'Dry Season',
+                'harvest_season' => 'All Year',
+                'optimal_temp_min' => 15,
+                'optimal_temp_max' => 25,
+                'water_requirement' => 350,
+                'soil_type_preference' => 'Sandy Loam',
+                'ph_min' => 6.0,
+                'ph_max' => 7.0,
+                'is_active' => true,
+            ],
+            [
+                'name' => 'Wheat',
+                'scientific_name' => 'Triticum aestivum',
+                'category' => 'Cereals',
+                'days_to_maturity' => 110,
+                'planting_season' => 'Long Rains',
+                'harvest_season' => 'Dry Season',
+                'optimal_temp_min' => 15,
+                'optimal_temp_max' => 25,
+                'water_requirement' => 450,
+                'soil_type_preference' => 'Clay Loam',
+                'ph_min' => 6.0,
+                'ph_max' => 7.5,
+                'is_active' => true,
+            ],
+            [
+                'name' => 'Carrots',
+                'scientific_name' => 'Daucus carota',
+                'category' => 'Vegetables',
+                'days_to_maturity' => 75,
+                'planting_season' => 'All Year',
+                'harvest_season' => 'All Year',
+                'optimal_temp_min' => 15,
+                'optimal_temp_max' => 22,
+                'water_requirement' => 400,
+                'soil_type_preference' => 'Sandy Loam',
+                'ph_min' => 6.0,
+                'ph_max' => 6.8,
+                'is_active' => true,
+            ],
+            [
+                'name' => 'Spinach',
+                'scientific_name' => 'Spinacia oleracea',
+                'category' => 'Vegetables',
+                'days_to_maturity' => 45,
+                'planting_season' => 'All Year',
+                'harvest_season' => 'All Year',
+                'optimal_temp_min' => 15,
+                'optimal_temp_max' => 22,
+                'water_requirement' => 350,
+                'soil_type_preference' => 'Loam',
+                'ph_min' => 6.0,
+                'ph_max' => 7.0,
+                'is_active' => true,
+            ],
+        ];
+
+        foreach ($crops as $crop) {
+            Crop::firstOrCreate(
+                ['name' => $crop['name']],
+                $crop
+            );
+        }
+    }
+}
