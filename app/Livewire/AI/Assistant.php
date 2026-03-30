@@ -136,6 +136,7 @@ class Assistant extends Component
                 'type' => 'chat',
                 'provider' => $result['provider'],
                 'model' => $result['model'],
+                'prompt' => $message,
                 'response' => $result['text'],
                 'role' => 'assistant',
                 'status' => 'completed',
