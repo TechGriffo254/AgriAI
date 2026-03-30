@@ -90,6 +90,32 @@ class AgriAIService
 
         $result = $this->gemini->analyzeImage($prompt, $imagePath, $systemPrompt);
 
+        // Fallback: if vision provider is unavailable (e.g. quota), still provide
+        // a symptoms-based diagnosis via the configured chat provider.
+        if (! $result['success']) {
+            $error = strtolower($result['error'] ?? '');
+            $shouldFallback = str_contains($error, 'quota')
+                || str_contains($error, 'rate limit')
+                || str_contains($error, 'unavailable')
+                || str_contains($error, 'temporar');
+
+            if ($shouldFallback) {
+                $fallbackPrompt = "Image-based diagnosis is temporarily unavailable. ";
+                $fallbackPrompt .= "Provide a best-effort diagnosis using symptoms only.\n\n";
+                if ($cropName) {
+                    $fallbackPrompt .= "Crop: {$cropName}\n";
+                }
+                $fallbackPrompt .= "Observed symptoms: {$symptoms}\n\n";
+                $fallbackPrompt .= "Return JSON with keys: identified_issue, scientific_name, confidence, severity, description, treatment_options (array), prevention_measures (array).";
+
+                $fallback = $this->getChatService()->generateText($fallbackPrompt, $systemPrompt);
+                if ($fallback['success']) {
+                    $fallback['text'] .= "\n\nNote: This result was generated from symptom text only because image analysis is temporarily unavailable.";
+                    $result = $fallback;
+                }
+            }
+        }
+
         if ($user && $result['success']) {
             $this->logQuery($user, 'pest_diagnosis', $prompt, $result);
         }
