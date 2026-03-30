@@ -42,12 +42,13 @@ test('selecting a farm loads weather data', function () {
 test('weather shows mock data when no api key configured', function () {
     config(['weather.providers.openweathermap.api_key' => null]);
 
-    Livewire::actingAs($this->user)
+    $component = Livewire::actingAs($this->user)
         ->test(Weather\Index::class)
         ->set('selectedFarmId', $this->farm->id)
         ->call('fetchWeather')
-        ->assertSet('error', null)
-        ->assertNotNull('currentWeather');
+        ->assertSet('error', null);
+
+    expect($component->get('currentWeather'))->not->toBeNull();
 });
 
 test('weather shows error when farm has no coordinates', function () {

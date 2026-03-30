@@ -112,7 +112,7 @@ class Edit extends Component
             'due_time' => $this->due_time,
             'completed_at' => $completedAt,
             'reminder_enabled' => $this->reminder_enabled,
-            'reminder_minutes_before' => $this->reminder_enabled ? $this->reminder_minutes_before : null,
+            'reminder_minutes_before' => $this->reminder_enabled ? ($this->reminder_minutes_before ?? 60) : 60,
         ]);
 
         session()->flash('success', 'Task updated successfully.');
@@ -136,7 +136,7 @@ class Edit extends Component
         $user = Auth::user();
         $farms = $user->farms()->pluck('name', 'id');
         $cropCycles = $this->farm_id
-            ? $user->cropCycles()->where('farm_id', $this->farm_id)->pluck('name', 'id')
+            ? $user->cropCycles()->where('farm_id', $this->farm_id)->pluck('crop_cycles.name', 'crop_cycles.id')
             : collect();
 
         return view('livewire.tasks.edit', [

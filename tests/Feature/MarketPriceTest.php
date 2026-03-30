@@ -40,14 +40,20 @@ describe('Market Price Index', function () {
     });
 
     it('can filter prices by commodity', function () {
-        MarketPrice::factory()->create(['commodity' => 'Maize']);
-        MarketPrice::factory()->create(['commodity' => 'Beans']);
+        MarketPrice::factory()->create([
+            'commodity' => 'Maize',
+            'market_name' => 'Maize Market',
+        ]);
+        MarketPrice::factory()->create([
+            'commodity' => 'Beans',
+            'market_name' => 'Beans Market',
+        ]);
 
         Livewire::actingAs($this->user)
             ->test(Index::class)
             ->set('commodity', 'Maize')
-            ->assertSee('Maize')
-            ->assertDontSee('Beans');
+            ->assertSee('Maize Market')
+            ->assertDontSee('Beans Market');
     });
 
     it('can search prices', function () {
@@ -57,8 +63,8 @@ describe('Market Price Index', function () {
         Livewire::actingAs($this->user)
             ->test(Index::class)
             ->set('search', 'Wakulima')
-            ->assertSee('Maize')
-            ->assertDontSee('Rice');
+            ->assertSee('Wakulima')
+            ->assertDontSee('Gikomba');
     });
 
     it('can sort prices', function () {
@@ -112,9 +118,9 @@ describe('Market Price Create', function () {
             ->test(Create::class)
             ->set('commodity', '')
             ->set('marketName', '')
-            ->set('price', '')
+            ->set('price', -1)
             ->call('save')
-            ->assertHasErrors(['commodity', 'marketName', 'price']);
+            ->assertHasErrors(['commodity', 'marketName', 'price' => 'min']);
     });
 
     it('calculates price change from previous entry', function () {
@@ -227,9 +233,9 @@ describe('Market Price Edit', function () {
         Livewire::actingAs($this->user)
             ->test(Edit::class, ['marketPrice' => $price])
             ->set('commodity', '')
-            ->set('price', '')
+            ->set('price', -1)
             ->call('save')
-            ->assertHasErrors(['commodity', 'price']);
+            ->assertHasErrors(['commodity', 'price' => 'min']);
     });
 });
 
