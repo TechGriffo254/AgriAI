@@ -116,6 +116,10 @@ class AgriAIService
                 $fallbackPrompt .= "Return JSON with keys: identified_issue, scientific_name, confidence, severity, description, treatment_options (array), prevention_measures (array).";
 
                 $fallback = $this->getChatService()->generateText($fallbackPrompt, $systemPrompt);
+                if (! $fallback['success'] && $this->groq->isConfigured()) {
+                    $fallback = $this->groq->generateText($fallbackPrompt, $systemPrompt);
+                }
+
                 if ($fallback['success']) {
                     $fallback['text'] .= "\n\nNote: This result was generated from symptom text only because image analysis is temporarily unavailable.";
                     $result = $fallback;
